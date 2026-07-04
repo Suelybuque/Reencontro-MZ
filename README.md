@@ -10,10 +10,9 @@ _"Uma mãe perde o contacto com os filhos durante a enchente. Com a nossa aplica
 ## Cy **O Problema e a Solução** 
 
 Durante cheias e calamidades naturais em Moçambique, a quebra de infraestruturas de comunicação e a evacuação caótica resultam frequentemente na separação trágica de famílias. Enquanto a maioria das soluções  foca-se  na  prevenção  (Alertas)  ou  na  evacuação  (Rotas  Seguras),  o **Reencontro  MZ** atua diretamente na fase crítica de **Resposta (Categoria 3)** , providenciando uma plataforma de ponta a ponta otimizada para ligações lentas que liga quem procura a quem encontrou. 
-
 ## W 
 
-## W **Funcionalidades Principais (Ponta a Ponta)** 
+##  **Funcionalidades Principais (Ponta a Ponta)** 
 
 - **Registo de Pessoas Desaparecidas:** Formulário ultra-leve para familiares submeterem dados essenciais (nome, idade, foto opcional e último local conhecido). 
 
@@ -55,7 +54,7 @@ Esta solução foi inteiramente desenhada e desenvolvida utilizando o ecossistem
 
 - **Chat & Regras:** Criação de regras personalizadas para garantir que todo o código gerado respeitasse a política de "dados mínimos" e boas práticas de acessibilidade mobile-first. 
 
-## T **Instalação e Execução Local** 
+## **Instalação e Execução Local** 
 
 Siga os passos abaixo para rodar o projeto localmente: 
 
@@ -67,15 +66,8 @@ Siga os passos abaixo para rodar o projeto localmente:
 
 `# Inicie o servidor de desenvolvimento npm run dev` 
 
-## O 
 
-## O **Demonstração de 3 Minutos (Pitch Flow)** 
-
-1. **0:00 - 0:30 (A Narrativa):** Apresentação do cenário de cheias em Moçambique e o drama da separação familiar. 
-
-2. **0:30 - 1:30 (O Fluxo da Mãe):** Demonstração em direto da submissão do formulário "Perdi a minha filha Maria" em condições de rede simulada 3G lenta. 
-
-3. **1:30 - 2:30 (O Fluxo do Abrigo & Match):** Voluntário regista Maria no abrigo X. O sistema faz o cruzamento instantâneo e notifica a mãe com a localização exata do abrigo. 
+ 
 
 4. **2:30 - 3:00 (Conclusão):** Fecho com métricas de performance do PWA offline e impacto humano da solução. 
 
