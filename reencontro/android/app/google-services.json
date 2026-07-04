@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1070451123646",
+    "project_id": "reencontromz",
+    "storage_bucket": "reencontromz.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070451123646:android:c48e5d34fada00597b85ef",
+        "android_client_info": {
+          "package_name": "com.example.reencontro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOKgkhWa8j6tdqOFtg4yRLIn1VGEMDqyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
