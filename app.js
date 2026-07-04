@@ -17,7 +17,7 @@ const MOCK_DATA = [
     timestamp: new Date(Date.now() - 3600000).toISOString(),
     status: 'active',
     urgency: 'high',
-    photoUrl: 'https://images.unsplash.com/photo-1595290293434-555d42427e84?auto=format&fit=crop&w=300&q=80'
+    photoUrl: 'child.jpg'
   },
   {
     id: '2',
@@ -30,7 +30,8 @@ const MOCK_DATA = [
     contactPhone: '+258 87 654 3210',
     timestamp: new Date(Date.now() - 7200000).toISOString(),
     status: 'active',
-    urgency: 'critical'
+    urgency: 'critical',
+    photoUrl: 'man.jpg'
   },
   {
     id: '3',
@@ -84,7 +85,8 @@ const MOCK_DATA = [
     contactPhone: '+258 853386491',
     timestamp: new Date(Date.now() - 86400000).toISOString(),
     status: 'reunited',
-    urgency: 'none'
+    urgency: 'none',
+    photoUrl: 'https://images.unsplash.com/photo-1543884391-7649557f9202?auto=format&fit=crop&w=300&q=80'
   },
   {
     id: '7',
@@ -98,7 +100,7 @@ const MOCK_DATA = [
     timestamp: new Date(Date.now() - 10800000).toISOString(),
     status: 'active',
     urgency: 'high',
-    photoUrl: 'https://images.unsplash.com/photo-1531123897727-8f129e1bf98c?auto=format&fit=crop&w=300&q=80'
+    photoUrl: 'woman.jpg'
   },
   {
     id: '8',
@@ -111,7 +113,8 @@ const MOCK_DATA = [
     contactPhone: '+258 84 111 2222',
     timestamp: new Date(Date.now() - 172800000).toISOString(),
     status: 'reunited',
-    urgency: 'none'
+    urgency: 'none',
+    photoUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=300&q=80'
   }
 ];
 
@@ -140,7 +143,7 @@ let state = {
 /** Initialize the app: load data, show splash, then transition to feed */
 function initApp() {
   // Load from localStorage or use mock data
-  const saved = localStorage.getItem('reencontro_data');
+  const saved = localStorage.getItem('reencontro_data_v3');
   state.items = saved ? JSON.parse(saved) : [...MOCK_DATA];
   saveData();
 
@@ -152,6 +155,14 @@ function initApp() {
       splash.classList.add('hidden');
       renderFeed();
       updateStats();
+      
+      // Initialize Swiper for Carousel
+      if (document.querySelector('.mySwiper')) {
+        new Swiper('.mySwiper', {
+          effect: 'cards',
+          grabCursor: true,
+        });
+      }
     }, 600);
   }, 2200);
 
@@ -161,7 +172,7 @@ function initApp() {
 
 /** Save data to localStorage */
 function saveData() {
-  localStorage.setItem('reencontro_data', JSON.stringify(state.items));
+  localStorage.setItem('reencontro_data_v3', JSON.stringify(state.items));
 }
 
 // ---- Navigation ----
@@ -218,12 +229,14 @@ function renderMissingCarousel() {
   
   container.classList.remove('hidden');
   track.innerHTML = missingItems.map(item => `
-    <div class="carousel-card" onclick="showDetail('${item.id}')">
-      <img class="carousel-photo" src="${item.photoUrl || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80'}" alt="Foto de ${escapeHtml(item.name)}" loading="lazy">
+    <div class="swiper-slide" onclick="showDetail('${item.id}')">
+      <img class="carousel-photo" src="${item.photoUrl || 'https://images.unsplash.com/photo-1531384441138-1e8d6c6e7a2b?auto=format&fit=crop&w=300&q=80'}" alt="Foto de ${escapeHtml(item.name)}" loading="lazy">
       <div class="carousel-info">
         <div class="carousel-name">${escapeHtml(item.name)}</div>
         <div class="carousel-meta">${item.age ? item.age + ' anos' : 'Idade desc.'} • ${escapeHtml(item.lastLocation.split(',')[0])}</div>
-        <button class="carousel-btn" onclick="event.stopPropagation(); shareItem('${item.id}')">📤 Partilhar</button>
+        <button class="carousel-btn" onclick="event.stopPropagation(); shareItem('${item.id}')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg> Partilhar
+        </button>
       </div>
     </div>
   `).join('');
@@ -280,10 +293,10 @@ function renderFeed() {
 /** Render a single card */
 function renderCard(item) {
   const icons = {
-    missing: '👤',
-    found: '✅',
-    sos: '🆘',
-    reunited: '💜'
+    missing: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>',
+    found: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+    sos: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
+    reunited: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>'
   };
 
   const typeLabels = {
@@ -301,7 +314,9 @@ function renderCard(item) {
   return `
     <article class="card card--${item.type}" onclick="showDetail('${item.id}')" id="card-${item.id}">
       <div class="card-header">
-        <div class="card-avatar">${icons[item.type]}</div>
+        <div class="card-avatar" ${item.photoUrl ? `style="background-image: url('${item.photoUrl}'); background-size: cover; background-position: center;"` : ''}>
+          ${item.photoUrl ? '' : icons[item.type]}
+        </div>
         <div class="card-info">
           <div class="card-name">${escapeHtml(item.name)}</div>
           <div class="card-meta">
@@ -362,7 +377,12 @@ function showDetail(id) {
   state.currentDetailId = id;
 
   const typeLabels = { missing: 'Pessoa Desaparecida', found: 'Pessoa Encontrada', sos: 'Pedido SOS', reunited: 'Família Reunida' };
-  const typeIcons = { missing: '👤', found: '✅', sos: '🆘', reunited: '💜' };
+  const typeIcons = {
+    missing: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>',
+    found: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+    sos: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
+    reunited: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>'
+  };
   const typeColors = { missing: 'missing', found: 'found', sos: 'sos', reunited: 'reunited' };
 
   const screen = document.getElementById('screen-detail');
@@ -373,7 +393,9 @@ function showDetail(id) {
       </button>
 
       <div class="detail-type-banner detail-type-banner--${typeColors[item.type]}">
-        <span class="detail-type-icon">${typeIcons[item.type]}</span>
+        <span class="detail-type-icon" style="display:flex;align-items:center;justify-content:center; overflow:hidden;">
+          ${item.photoUrl ? `<img src="${item.photoUrl}" style="width:100%; height:100%; object-fit:cover;">` : typeIcons[item.type]}
+        </span>
         <div>
           <div class="detail-type-label" style="color: var(--color-${typeColors[item.type]}-light)">${typeLabels[item.type]}</div>
           <div class="text-xs text-muted">${formatTimeAgo(item.timestamp)}</div>
@@ -600,11 +622,12 @@ function renderReunions() {
   if (!list) return;
 
   const reunited = state.items.filter(i => i.type === 'reunited');
+  const reunitedIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
 
   if (reunited.length === 0) {
     list.innerHTML = `
       <div class="empty-state">
-        <div class="empty-state-icon">💜</div>
+        <div class="empty-state-icon" style="color: var(--color-reunited)">${reunitedIcon}</div>
         <div class="empty-state-title">Ainda sem reuniões</div>
         <div class="empty-state-text">Quando famílias forem reunidas, as suas histórias aparecerão aqui.</div>
       </div>`;
@@ -614,7 +637,9 @@ function renderReunions() {
   list.innerHTML = reunited.map(item => `
     <article class="reunion-card" onclick="showDetail('${item.id}')">
       <div class="card-header">
-        <div class="card-avatar" style="background: var(--color-reunited-bg); border: 2px solid rgba(168,85,247,0.3);">💜</div>
+        <div class="card-avatar" style="${item.photoUrl ? `background-image: url('${item.photoUrl}'); background-size: cover; background-position: center; border: 2px solid var(--color-reunited);` : `background: var(--color-reunited-bg); border: 2px solid rgba(147,51,234,0.3); color: var(--color-reunited);`}">
+          ${item.photoUrl ? '' : reunitedIcon}
+        </div>
         <div class="card-info">
           <div class="card-name">${escapeHtml(item.name)}</div>
           <div class="card-meta">

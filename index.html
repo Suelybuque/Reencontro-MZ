@@ -14,11 +14,10 @@
 
   <title>Reencontro MZ — Reunificação Familiar</title>
 
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/svg+xml"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤝</text></svg>">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css" />
+  <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
   <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -26,9 +25,7 @@
 
   <!-- ========== SPLASH SCREEN ========== -->
   <div id="splash-screen" class="splash-screen">
-    <div class="splash-logo">🤝</div>
-    <div class="splash-title">Reencontro MZ</div>
-    <div class="splash-subtitle">Reunir famílias · Salvar vidas</div>
+    <img src="logo.jpg" alt="Reencontro MZ Logo" class="splash-logo-img">
     <div class="splash-loader"></div>
   </div>
 
@@ -42,7 +39,7 @@
     <header class="app-header" id="app-header">
       <div class="header-top">
         <div class="header-brand">
-          <div class="header-logo">🤝</div>
+          <img src="logo.jpg" alt="Logo" class="header-logo-img">
           <div>
             <div class="header-title">Reencontro <span>MZ</span></div>
           </div>
@@ -94,8 +91,10 @@
         <div class="carousel-header">
           <h3>🚨 Urgente: Desaparecidos</h3>
         </div>
-        <div class="carousel-track" id="carousel-track">
-          <!-- Cards rendered by JS -->
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper" id="carousel-track">
+            <!-- Cards rendered by JS -->
+          </div>
         </div>
       </div>
 
@@ -336,16 +335,16 @@
     <nav class="nav-bottom" id="nav-bottom">
       <div class="nav-items">
         <button class="nav-item active" data-screen="feed" id="nav-feed">
-          <span class="nav-icon">🏠</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           <span class="nav-label">Início</span>
           <span class="nav-badge hidden" id="nav-badge-sos">0</span>
         </button>
         <button class="nav-item" data-screen="map" id="nav-map">
-          <span class="nav-icon">🗺️</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
           <span class="nav-label">Pontos Ajuda</span>
         </button>
         <button class="nav-item" data-screen="reunions" id="nav-reunions">
-          <span class="nav-icon">💜</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span class="nav-label">Reuniões</span>
         </button>
       </div>
