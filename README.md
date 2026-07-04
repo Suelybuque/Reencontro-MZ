@@ -5,12 +5,12 @@
 
 _"Uma mãe perde o contacto com os filhos durante a enchente. Com a nossa aplicação, ela regista-os como desaparecidos. Um voluntário num abrigo a 5km encontra as crianças e faz o match. A família reúne-se."_ 
 
-## Cy 
 
-## Cy **O Problema e a Solução** 
+
+##  **O Problema e a Solução** 
 
 Durante cheias e calamidades naturais em Moçambique, a quebra de infraestruturas de comunicação e a evacuação caótica resultam frequentemente na separação trágica de famílias. Enquanto a maioria das soluções  foca-se  na  prevenção  (Alertas)  ou  na  evacuação  (Rotas  Seguras),  o **Reencontro  MZ** atua diretamente na fase crítica de **Resposta (Categoria 3)** , providenciando uma plataforma de ponta a ponta otimizada para ligações lentas que liga quem procura a quem encontrou. 
-## W 
+## 
 
 ##  **Funcionalidades Principais (Ponta a Ponta)** 
 
@@ -69,7 +69,6 @@ Siga os passos abaixo para rodar o projeto localmente:
 
  
 
-4. **2:30 - 3:00 (Conclusão):** Fecho com métricas de performance do PWA offline e impacto humano da solução. 
 
 Reencontro MZ — README.md 
 
