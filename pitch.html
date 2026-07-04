@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="pt-MZ">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>Pitch - Reencontro MZ</title>
+		
+		<!-- Reveal.js para slides profissionais -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.min.css">
+        
+		<!-- Chart.js para o gráfico -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+			
+			.reveal {
+				font-family: 'Inter', sans-serif;
+			}
+            .reveal h1, .reveal h2, .reveal h3 {
+                color: #3b82f6; /* App accent color */
+                text-transform: none;
+				font-family: 'Inter', sans-serif;
+				font-weight: 800;
+            }
+            .reveal .accent { color: #f97316; } /* Missing color */
+            .reveal .success { color: #10b981; } /* Found color */
+			.reveal .danger { color: #ef4444; } /* SOS color */
+            
+			.reveal p, .reveal li { 
+				font-size: 1.2em; 
+				line-height: 1.4; 
+			}
+            
+			.chart-container { 
+				position: relative; 
+				height: 45vh; 
+				width: 80vw; 
+				margin: 30px auto 0; 
+			}
+            
+			.whatsapp-box { 
+				border: 3px solid #25D366; 
+				padding: 30px; 
+				border-radius: 20px; 
+				background: rgba(37, 211, 102, 0.05);
+				margin-top: 30px;
+			}
+			
+			.whatsapp-box ul {
+				margin: 0;
+			}
+			.whatsapp-box li {
+				margin-bottom: 15px;
+			}
+        </style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				
+                <!-- ⏱️ [0:00 - 0:15] Slide 1: Título -->
+				<section>
+					<h1 style="font-size: 3.5em;">Reencontro <span style="color: #f1f5f9;">MZ</span></h1>
+					<h3 style="color: #a855f7;">Reunir Famílias. Combater a Desinformação.</h3>
+                    <p style="margin-top: 60px; color: #94a3b8;">Hackathon Cursor</p>
+				</section>
+
+                <!-- ⏱️ [0:15 - 0:45] Slide 2: O Problema e as Estatísticas -->
+				<section>
+					<h2>O Problema: <span class="accent">Desaparecimentos</span></h2>
+                    <p>A realidade em Moçambique é alarmante, agravando-se em crises:</p>
+                    <div class="chart-container">
+                        <canvas id="statsChart"></canvas>
+                    </div>
+                    <p style="font-size: 0.6em; color: #888; margin-top: 20px; text-align: right;">
+                        *Fontes: Fundo de Apoio às Pessoas Desaparecidas / Gabinete de Atendimento (Maputo).
+                    </p>
+				</section>
+
+                <!-- ⏱️ [0:45 - 1:10] Slide 3: O Problema do WhatsApp -->
+                <section>
+                    <h2>A Busca Atual: <span style="color: #25D366;">O Caos do WhatsApp</span></h2>
+                    <p>Em caso de desaparecimento, as famílias recorrem ao WhatsApp. O resultado?</p>
+                    <div class="whatsapp-box">
+                        <ul style="list-style: none;">
+                            <li>❌ <strong>Desinformação:</strong> Partilhas massivas de casos já resolvidos</li>
+                            <li>❌ <strong>Falta de Rastreabilidade:</strong> Impossível verificar a fonte</li>
+                            <li>❌ <strong>Pânico:</strong> Aumenta a ansiedade sem resolver o problema</li>
+                        </ul>
+                    </div>
+					<h3 style="margin-top: 30px; color: #ef4444;">A boa intenção gera desinformação.</h3>
+                </section>
+
+                <!-- ⏱️ [1:10 - 1:30] Slide 4: A Solução -->
+                <section>
+                    <h2>A Solução: <span style="color: #3b82f6;">Reencontro MZ</span></h2>
+					<p>A plataforma que substitui o caos por <strong>esperança estruturada</strong>.</p>
+                    <ul style="font-size: 1.2em; margin-top: 30px;">
+                        <li style="margin-bottom: 20px;">✅ <strong>Centralizado:</strong> Fonte única e confiável de informação</li>
+                        <li style="margin-bottom: 20px;">✅ <strong>Verificável:</strong> Atualizações de status em tempo real</li>
+                        <li style="margin-bottom: 20px;">✅ <strong>Mobile-First:</strong> Acessível em conexões 3G lentas</li>
+                        <li style="margin-bottom: 20px;">✅ <strong>Inteligente:</strong> Sistema de "Match" automático</li>
+                    </ul>
+                </section>
+
+                <!-- ⏱️ [1:30 - 2:40] Slide 5: Transição para a Demo (Tempo principal) -->
+                <section>
+                    <h1 class="success" style="font-size: 4em;">DEMONSTRAÇÃO</h1>
+                    <p style="font-size: 1.5em; margin-top: 30px;">O Reencontro MZ em Ação (1m 10s)</p>
+					<p style="color: #94a3b8;">(Mudar de ecrã para o protótipo ao vivo)</p>
+                </section>
+
+                <!-- ⏱️ [2:40 - 3:00] Slide 6: Fecho -->
+                <section>
+                    <h2>O Impacto</h2>
+                    <p style="font-size: 1.5em;">Transformar dias de angústia e desinformação em <strong>reencontros rápidos e seguros</strong>.</p>
+                    <h3 style="margin-top: 60px; color: #a855f7; font-size: 2em;">Cada minuto conta.<br>Ajudem-nos a reunir Moçambique.</h3>
+					<p style="margin-top: 40px;">Obrigado!</p>
+                </section>
+			</div>
+		</div>
+
+		<!-- Scripts do Reveal.js e inicialização -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
+		<script>
+			Reveal.initialize({
+                hash: true,
+                controls: true,
+                progress: true,
+                center: true,
+                transition: 'slide'
+            });
+
+            // Configuração do Gráfico Chart.js
+            const ctx = document.getElementById('statsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [
+						['159 Casos', 'Média Nacional Anual'], 
+						['60 Crianças', 'Casos em Maputo (Anual)'], 
+						['Picos Extremos', 'Cheias e Conflitos']
+					],
+                    datasets: [{
+                        label: 'Número de Casos',
+                        data: [159, 60, 400], // 400 é ilustrativo para o aumento drástico (picos)
+                        backgroundColor: [
+                            'rgba(249, 115, 22, 0.8)', // Laranja (Missing)
+                            'rgba(59, 130, 246, 0.8)',  // Azul (Info)
+                            'rgba(239, 68, 68, 0.8)'    // Vermelho (SOS/Crise)
+                        ],
+                        borderColor: [
+                            'rgb(249, 115, 22)',
+                            'rgb(59, 130, 246)',
+                            'rgb(239, 68, 68)'
+                        ],
+                        borderWidth: 2,
+						borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+						tooltip: {
+							titleFont: { size: 16 },
+							bodyFont: { size: 16 }
+						}
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+							grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#f1f5f9', font: { size: 16 } }
+                        },
+                        x: {
+							grid: { display: false },
+                            ticks: { color: '#f1f5f9', font: { size: 18, weight: 'bold' } }
+                        }
+                    }
+                }
+            });
+		</script>
+	</body>
+</html>

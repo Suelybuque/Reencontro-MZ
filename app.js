@@ -16,7 +16,8 @@ const MOCK_DATA = [
     contactPhone: '+258 84 123 4567',
     timestamp: new Date(Date.now() - 3600000).toISOString(),
     status: 'active',
-    urgency: 'high'
+    urgency: 'high',
+    photoUrl: 'https://images.unsplash.com/photo-1595290293434-555d42427e84?auto=format&fit=crop&w=300&q=80'
   },
   {
     id: '2',
@@ -96,7 +97,8 @@ const MOCK_DATA = [
     contactPhone: '+258 85 222 3333',
     timestamp: new Date(Date.now() - 10800000).toISOString(),
     status: 'active',
-    urgency: 'high'
+    urgency: 'high',
+    photoUrl: 'https://images.unsplash.com/photo-1531123897727-8f129e1bf98c?auto=format&fit=crop&w=300&q=80'
   },
   {
     id: '8',
@@ -112,6 +114,17 @@ const MOCK_DATA = [
     urgency: 'none'
   }
 ];
+
+// ---- Mock Help Points ----
+const HELP_POINTS = [
+  { id: 'hp1', name: 'Escola Secundária Josina Machel', type: 'Abrigo e Comida', lat: -25.9655, lng: 32.5832 },
+  { id: 'hp2', name: 'Hospital Central de Maputo', type: 'Emergência Médica', lat: -25.9782, lng: 32.5898 },
+  { id: 'hp3', name: 'Centro de Evacuação Xipamanine', type: 'Abrigo', lat: -25.9453, lng: 32.5641 },
+  { id: 'hp4', name: 'Cruz Vermelha - Beira', type: 'Centro de Comando', lat: -19.8436, lng: 34.8389 }
+];
+
+let leafletMap = null;
+let userMarker = null;
 
 // ---- State ----
 let state = {
@@ -183,12 +196,43 @@ function navigateTo(screen) {
     updateStats();
   } else if (screen === 'reunions') {
     renderReunions();
+  } else if (screen === 'map') {
+    setTimeout(initMap, 50); // Timeout allows CSS transition to complete so map gets correct height
   }
 }
 
 // ---- Feed Rendering ----
+/** Render the carousel for missing persons */
+function renderMissingCarousel() {
+  const track = document.getElementById('carousel-track');
+  const container = document.getElementById('missing-carousel-container');
+  if (!track || !container) return;
+
+  const missingItems = state.items.filter(i => i.type === 'missing' && i.status === 'active');
+  
+  // Hide if no missing items or if user is filtering specifically for non-missing
+  if (missingItems.length === 0 || (state.currentFilter !== 'all' && state.currentFilter !== 'missing')) {
+    container.classList.add('hidden');
+    return;
+  }
+  
+  container.classList.remove('hidden');
+  track.innerHTML = missingItems.map(item => `
+    <div class="carousel-card" onclick="showDetail('${item.id}')">
+      <img class="carousel-photo" src="${item.photoUrl || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80'}" alt="Foto de ${escapeHtml(item.name)}" loading="lazy">
+      <div class="carousel-info">
+        <div class="carousel-name">${escapeHtml(item.name)}</div>
+        <div class="carousel-meta">${item.age ? item.age + ' anos' : 'Idade desc.'} • ${escapeHtml(item.lastLocation.split(',')[0])}</div>
+        <button class="carousel-btn" onclick="event.stopPropagation(); shareItem('${item.id}')">📤 Partilhar</button>
+      </div>
+    </div>
+  `).join('');
+}
+
 /** Render the feed with filtered items */
 function renderFeed() {
+  renderMissingCarousel();
+
   const list = document.getElementById('feed-list');
   if (!list) return;
 
@@ -599,6 +643,73 @@ function toggleFABMenu() {
   if (fabBackdrop) fabBackdrop.classList.toggle('show', state.fabOpen);
 }
 
+// ---- Map & Geolocation ----
+/** Initialize the Leaflet map */
+function initMap() {
+  if (leafletMap) {
+    leafletMap.invalidateSize();
+    return;
+  }
+  
+  const mapView = document.getElementById('map-view');
+  if (!mapView) return;
+
+  // Default center: Maputo
+  leafletMap = L.map('map-view', { zoomControl: false }).setView([-25.9692, 32.5732], 13);
+  L.control.zoom({ position: 'topright' }).addTo(leafletMap);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap &copy; CARTO'
+  }).addTo(leafletMap);
+
+  // Add help points markers
+  HELP_POINTS.forEach(hp => {
+    const marker = L.marker([hp.lat, hp.lng]).addTo(leafletMap);
+    marker.bindPopup(`<div style="font-family:'Inter',sans-serif; text-align:center;">
+      <strong style="font-size:16px;">${hp.name}</strong><br>
+      <span style="color:#2188ff; font-weight:600;">${hp.type}</span>
+    </div>`);
+  });
+}
+
+/** Find user location and center map */
+function findMe() {
+  if (!leafletMap) return;
+  
+  showToast('A localizar...', 'A procurar a sua localização via GPS', 'info');
+  
+  if (!navigator.geolocation) {
+    showToast('Erro', 'Geolocalização não suportada neste dispositivo', 'error');
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      
+      if (userMarker) leafletMap.removeLayer(userMarker);
+      
+      const userIcon = L.divIcon({
+        className: 'custom-user-marker',
+        html: '<div style="background:#ef4444; width:16px; height:16px; border-radius:50%; border:3px solid white; box-shadow:0 0 10px rgba(0,0,0,0.5);"></div>',
+        iconSize: [22, 22],
+        iconAnchor: [11, 11]
+      });
+      
+      userMarker = L.marker([lat, lng], {icon: userIcon}).addTo(leafletMap);
+      userMarker.bindPopup('<strong style="font-family:\'Inter\'">Você está aqui</strong>').openPopup();
+      
+      leafletMap.flyTo([lat, lng], 14, { animate: true, duration: 1.5 });
+      showToast('Localizado', 'O mapa foi centrado na sua posição', 'success');
+    },
+    (err) => {
+      showToast('Erro GPS', 'Ative a localização para ver pontos perto de si', 'error');
+    },
+    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+  );
+}
+
 // ---- Search ----
 /** Handle search input */
 function handleSearch(query) {
@@ -683,20 +794,25 @@ function shareItem(id) {
   const item = state.items.find(i => i.id === id);
   if (!item) return;
 
-  const typeLabels = { missing: 'DESAPARECIDO', found: 'ENCONTRADO', sos: 'SOS', reunited: 'REUNIDO' };
-  const text = `🆘 REENCONTRO MZ — ${typeLabels[item.type]}\n\n` +
-    `Nome: ${item.name}\n` +
-    `Local: ${item.lastLocation}\n` +
-    `${item.description}\n\n` +
-    `Contacto: ${item.contactName} — ${item.contactPhone}\n\n` +
-    `📲 Partilhe para ajudar!`;
+  const typeLabels = { missing: '🚨 DESAPARECIDO', found: '✅ ENCONTRADO', sos: '🆘 SOS URGENTE', reunited: '💜 REUNIDO' };
+  
+  // Format text to combat misinformation by always pointing to a single source of truth
+  const text = `${typeLabels[item.type]} — REENCONTRO MZ\n\n` +
+    `👤 Nome: ${item.name}\n` +
+    `📍 Local: ${item.lastLocation}\n` +
+    `📝 Info: ${item.description}\n\n` +
+    `📞 Contacto: ${item.contactName} — ${item.contactPhone}\n\n` +
+    `⚠️ A partilha de informações falsas no WhatsApp prejudica os resgates.\n` +
+    `🔗 Verifique o status atualizado e oficial aqui: https://reencontro-mz.vercel.app/info/${item.id}`;
 
-  if (navigator.share) {
+  if (navigator.share && /mobile/i.test(navigator.userAgent)) {
+    // Use native share on mobile devices
     navigator.share({ title: `Reencontro MZ — ${item.name}`, text }).catch(() => { });
   } else {
-    navigator.clipboard.writeText(text).then(() => {
-      showToast('Copiado!', 'Informação copiada. Cole e partilhe.', 'success');
-    });
+    // Direct WhatsApp fallback for desktop/devices without Web Share
+    const encodedText = encodeURIComponent(text);
+    window.open(`https://wa.me/?text=${encodedText}`, '_blank');
+    showToast('A redirecionar...', 'A abrir o WhatsApp com a mensagem formatada.', 'success');
   }
 }
 
@@ -767,6 +883,10 @@ function setupEventListeners() {
   document.querySelectorAll('.form-input, .form-textarea, .form-select').forEach(input => {
     input.addEventListener('input', () => clearError(input.id));
   });
+
+  // Map GPS button
+  const btnGps = document.getElementById('btn-gps');
+  if (btnGps) btnGps.addEventListener('click', findMe);
 }
 
 // ---- Start ----

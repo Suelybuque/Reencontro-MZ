@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+  <meta charset="UTF-8">
+  <title>Preview Style C - Tech Minimalist</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@400;500&display=swap');
+    
+    html, body {
+      margin: 0; padding: 0;
+      width: 100vw; height: 100vh;
+      overflow: hidden;
+      background: #0f172a;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Inter', sans-serif;
+      color: #f8fafc;
+    }
+    
+    .viewport-wrapper {
+      position: relative;
+      width: 1920px; height: 1080px;
+      transform-origin: center center;
+      background: #0f172a;
+      overflow: hidden;
+    }
+
+    .grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    .central-card {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 1400px;
+      height: 700px;
+      background: rgba(30, 41, 59, 0.4);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      border-radius: 40px;
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+      opacity: 0;
+      animation: scaleUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 100px;
+      color: #10b981;
+      font-weight: 500;
+      font-size: 20px;
+      margin-bottom: 50px;
+    }
+
+    .dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 20px #10b981;
+      animation: pulse 2s infinite;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 140px;
+      font-weight: 800;
+      margin: 0;
+      letter-spacing: -3px;
+    }
+
+    h2 {
+      font-size: 36px;
+      font-weight: 400;
+      color: #94a3b8;
+      margin-top: 30px;
+      max-width: 800px;
+      line-height: 1.5;
+    }
+
+    .code-accent {
+      position: absolute;
+      bottom: -60px; right: 100px;
+      font-family: monospace;
+      font-size: 24px;
+      color: rgba(148, 163, 184, 0.3);
+      transform: rotate(-90deg);
+      transform-origin: left top;
+    }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+    @keyframes scaleUp {
+      from { opacity: 0; transform: translate(-50%, -40%); }
+      to { opacity: 1; transform: translate(-50%, -50%); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="viewport-wrapper">
+    <div class="grid-bg"></div>
+    <div class="central-card">
+      <div class="status-pill">
+        <div class="dot"></div>
+        SYSTEM ONLINE // HACKATHON
+      </div>
+      <h1>Reencontro MZ</h1>
+      <h2>Plataforma centralizada para reunir famílias e combater desinformação.</h2>
+    </div>
+    <div class="code-accent">v1.0.0-beta_deploy</div>
+  </div>
+
+  <script>
+    function scaleStage() {
+      const wrapper = document.querySelector('.viewport-wrapper');
+      const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+      wrapper.style.transform = `scale(${scale})`;
+    }
+    window.addEventListener('resize', scaleStage);
+    scaleStage();
+  </script>
+</body>
+</html>

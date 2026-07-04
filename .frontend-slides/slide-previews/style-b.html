@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+  <meta charset="UTF-8">
+  <title>Preview Style B - Swiss Editorial</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Space+Grotesk:wght@400;700&display=swap');
+    
+    html, body {
+      margin: 0; padding: 0;
+      width: 100vw; height: 100vh;
+      overflow: hidden;
+      background: #f4f4f0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      color: #111111;
+    }
+    
+    .viewport-wrapper {
+      position: relative;
+      width: 1920px; height: 1080px;
+      transform-origin: center center;
+      background: #f4f4f0;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .left-col {
+      width: 60%;
+      height: 100%;
+      padding: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .right-col {
+      width: 40%;
+      height: 100%;
+      background: #e2e2dd;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .image-placeholder {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop') center/cover;
+      filter: grayscale(100%) contrast(1.2);
+      mix-blend-mode: multiply;
+      opacity: 0;
+      animation: fadeIn 2s ease 0.5s forwards;
+      transform: scale(1.1);
+      animation: scaleDown 10s ease-out forwards;
+    }
+
+    .red-block {
+      position: absolute;
+      top: 0; left: -20px;
+      width: 40px; height: 100%;
+      background: #d92d20;
+    }
+
+    .header-info {
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+      color: #d92d20;
+      margin-bottom: 80px;
+      opacity: 0;
+      animation: slideRight 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 180px;
+      line-height: 0.85;
+      margin: 0;
+      letter-spacing: -2px;
+      opacity: 0;
+      animation: slideRight 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+    }
+
+    h1 span {
+      font-style: italic;
+      color: #d92d20;
+    }
+
+    h2 {
+      font-size: 36px;
+      font-weight: 400;
+      color: #555555;
+      margin-top: 60px;
+      max-width: 800px;
+      line-height: 1.4;
+      opacity: 0;
+      animation: slideRight 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+    }
+
+    @keyframes slideRight {
+      from { opacity: 0; transform: translateX(-40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeIn {
+      to { opacity: 0.6; }
+    }
+    @keyframes scaleDown {
+      to { transform: scale(1); }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="viewport-wrapper">
+    <div class="left-col">
+      <div class="header-info">HACKATHON CURSOR // PROJETO IMPACTO</div>
+      <h1>Reencontro<br><span>MZ</span></h1>
+      <h2>Reunir Famílias.<br>Combater a Desinformação em Moçambique.</h2>
+    </div>
+    <div class="right-col">
+      <div class="red-block"></div>
+      <div class="image-placeholder"></div>
+    </div>
+  </div>
+
+  <script>
+    function scaleStage() {
+      const wrapper = document.querySelector('.viewport-wrapper');
+      const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+      wrapper.style.transform = `scale(${scale})`;
+    }
+    window.addEventListener('resize', scaleStage);
+    scaleStage();
+  </script>
+</body>
+</html>
