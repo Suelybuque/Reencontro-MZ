@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="description"
+    content="Reencontro MZ — Sistema de reunificação familiar durante enchentes em Moçambique. Encontre pessoas desaparecidas e peça socorro.">
+  <meta name="theme-color" content="#0a0e27">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Reencontro MZ">
+
+  <title>Reencontro MZ — Reunificação Familiar</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤝</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- ========== SPLASH SCREEN ========== -->
+  <div id="splash-screen" class="splash-screen">
+    <div class="splash-logo">🤝</div>
+    <div class="splash-title">Reencontro MZ</div>
+    <div class="splash-subtitle">Reunir famílias · Salvar vidas</div>
+    <div class="splash-loader"></div>
+  </div>
+
+  <!-- ========== APP CONTAINER ========== -->
+  <div class="app-container">
+
+    <!-- ===== TOAST CONTAINER ===== -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- ===== HEADER ===== -->
+    <header class="app-header" id="app-header">
+      <div class="header-top">
+        <div class="header-brand">
+          <div class="header-logo">🤝</div>
+          <div>
+            <div class="header-title">Reencontro <span>MZ</span></div>
+          </div>
+        </div>
+        <div class="header-live-badge">
+          <span class="live-dot"></span>
+          AO VIVO
+        </div>
+      </div>
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="search" id="search-input" placeholder="Procurar por nome, local..." autocomplete="off">
+      </div>
+    </header>
+
+    <!-- ===== SCREEN: FEED ===== -->
+    <main id="screen-feed" class="screen">
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card stat-card--missing">
+          <div class="stat-number" id="stat-missing">0</div>
+          <div class="stat-label">Desaparecidos</div>
+        </div>
+        <div class="stat-card stat-card--found">
+          <div class="stat-number" id="stat-found">0</div>
+          <div class="stat-label">Encontrados</div>
+        </div>
+        <div class="stat-card stat-card--sos">
+          <div class="stat-number" id="stat-sos">0</div>
+          <div class="stat-label">SOS Ativos</div>
+        </div>
+        <div class="stat-card stat-card--reunited">
+          <div class="stat-number" id="stat-reunited">0</div>
+          <div class="stat-label">Reunidos</div>
+        </div>
+      </div>
+
+      <!-- Filter Chips -->
+      <div class="chips-container">
+        <button class="chip active" data-filter="all" id="chip-all">Todos</button>
+        <button class="chip" data-filter="sos" id="chip-sos">🆘 SOS</button>
+        <button class="chip" data-filter="missing" id="chip-missing">👤 Desaparecidos</button>
+        <button class="chip" data-filter="found" id="chip-found">✅ Encontrados</button>
+        <button class="chip" data-filter="reunited" id="chip-reunited">💜 Reunidos</button>
+      </div>
+
+      <!-- Feed List -->
+      <div class="feed-list" id="feed-list">
+        <!-- Cards rendered by JS -->
+      </div>
+    </main>
+
+    <!-- ===== SCREEN: FORM — MISSING ===== -->
+    <section id="screen-form-missing" class="screen hidden">
+      <div class="form-screen">
+        <div class="form-header">
+          <button class="btn btn--ghost form-back-btn" id="btn-back-missing">← Voltar</button>
+          <div>
+            <div class="form-title">👤 Registar Desaparecido</div>
+            <div class="form-subtitle">Preencha os dados da pessoa que procura</div>
+          </div>
+        </div>
+
+        <form id="form-missing" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="missing-name">Nome completo <span class="required">*</span></label>
+            <input class="form-input" type="text" id="missing-name" placeholder="Ex: Maria João Silva">
+            <span class="form-error">Por favor, insira o nome da pessoa</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="missing-age">Idade (estimada)</label>
+            <input class="form-input" type="number" id="missing-age" placeholder="Ex: 8" min="0" max="120">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="missing-location">Último local conhecido <span
+                class="required">*</span></label>
+            <input class="form-input" type="text" id="missing-location" placeholder="Ex: Escola Primária de Chaquelane">
+            <span class="form-error">Por favor, indique onde a pessoa foi vista</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="missing-description">Descrição <span class="required">*</span></label>
+            <textarea class="form-textarea" id="missing-description"
+              placeholder="Descreva a aparência, roupa, sinais particulares..." rows="4"></textarea>
+            <span class="form-error">Adicione uma descrição para ajudar na busca</span>
+            <span class="form-hint">Inclua detalhes como: roupa, altura, sinais particulares</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="missing-contact">Seu nome (contacto) <span class="required">*</span></label>
+            <input class="form-input" type="text" id="missing-contact" placeholder="Ex: Ana Silva (mãe)">
+            <span class="form-error">Precisamos saber quem procura</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="missing-phone">Telefone <span class="required">*</span></label>
+            <input class="form-input" type="tel" id="missing-phone" placeholder="+258 84 000 0000">
+            <span class="form-error">Insira um número de telefone válido</span>
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--lg btn--full mt-lg" id="btn-submit-missing">
+            📢 Publicar Alerta de Desaparecido
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== SCREEN: FORM — FOUND ===== -->
+    <section id="screen-form-found" class="screen hidden">
+      <div class="form-screen">
+        <div class="form-header">
+          <button class="btn btn--ghost form-back-btn" id="btn-back-found">← Voltar</button>
+          <div>
+            <div class="form-title">✅ Reportar Pessoa Encontrada</div>
+            <div class="form-subtitle">Registar alguém que encontrou num abrigo ou local seguro</div>
+          </div>
+        </div>
+
+        <form id="form-found" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="found-name">Nome (ou descrição) <span class="required">*</span></label>
+            <input class="form-input" type="text" id="found-name" placeholder="Ex: Criança ~5 anos, diz chamar-se Tito">
+            <span class="form-error">Descreva como identificar a pessoa</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="found-age">Idade (estimada)</label>
+            <input class="form-input" type="number" id="found-age" placeholder="Ex: 5" min="0" max="120">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="found-location">Onde foi encontrada <span class="required">*</span></label>
+            <input class="form-input" type="text" id="found-location" placeholder="Ex: Centro de Evacuação EP1 Chibuto">
+            <span class="form-error">Indique o local actual da pessoa</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="found-description">Descrição <span class="required">*</span></label>
+            <textarea class="form-textarea" id="found-description"
+              placeholder="Estado de saúde, o que a pessoa disse, aparência..." rows="4"></textarea>
+            <span class="form-error">Adicione detalhes para ajudar na identificação</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="found-contact">Seu nome (quem reporta) <span
+                class="required">*</span></label>
+            <input class="form-input" type="text" id="found-contact" placeholder="Ex: Voluntário Cruz Vermelha">
+            <span class="form-error">Precisamos saber quem fez o registo</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="found-phone">Telefone <span class="required">*</span></label>
+            <input class="form-input" type="tel" id="found-phone" placeholder="+258 82 000 0000">
+            <span class="form-error">Insira um número de telefone</span>
+          </div>
+
+          <button type="submit" class="btn btn--success btn--lg btn--full mt-lg" id="btn-submit-found">
+            ✅ Publicar Pessoa Encontrada
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== SCREEN: FORM — SOS ===== -->
+    <section id="screen-form-sos" class="screen hidden">
+      <div class="form-screen">
+        <div class="form-header">
+          <button class="btn btn--ghost form-back-btn" id="btn-back-sos">← Voltar</button>
+          <div>
+            <div class="form-title">🆘 Pedido de Socorro</div>
+            <div class="form-subtitle">Enviar pedido urgente de ajuda</div>
+          </div>
+        </div>
+
+        <form id="form-sos" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="sos-name">Quem precisa de ajuda <span class="required">*</span></label>
+            <input class="form-input" type="text" id="sos-name" placeholder="Ex: Família Machava (6 pessoas)">
+            <span class="form-error">Identifique quem precisa de ajuda</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sos-location">Localização exacta <span class="required">*</span></label>
+            <input class="form-input" type="text" id="sos-location" placeholder="Ex: Bairro 3 de Fevereiro, Chókwè">
+            <span class="form-error">Indique a localização para enviar ajuda</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sos-need">Tipo de ajuda necessária</label>
+            <select class="form-select" id="sos-need">
+              <option value="resgate">🚤 Resgate / Evacuação</option>
+              <option value="medicamentos">💊 Medicamentos</option>
+              <option value="agua">💧 Água Potável</option>
+              <option value="comida">🍚 Alimentação</option>
+              <option value="abrigo">🏠 Abrigo</option>
+              <option value="outro">📦 Outro</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sos-description">Descreva a situação <span class="required">*</span></label>
+            <textarea class="form-textarea" id="sos-description"
+              placeholder="Descreva a emergência: quantas pessoas, condições, urgência..." rows="4"></textarea>
+            <span class="form-error">Descreva a situação de emergência</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sos-contact">Nome de contacto</label>
+            <input class="form-input" type="text" id="sos-contact" placeholder="Seu nome">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sos-phone">Telefone <span class="required">*</span></label>
+            <input class="form-input" type="tel" id="sos-phone" placeholder="+258 86 000 0000">
+            <span class="form-error">Insira um telefone para contacto</span>
+          </div>
+
+          <button type="submit" class="btn btn--danger btn--lg btn--full mt-lg" id="btn-submit-sos">
+            🆘 Enviar Pedido SOS
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== SCREEN: DETAIL ===== -->
+    <section id="screen-detail" class="screen hidden">
+      <!-- Content rendered by JS -->
+    </section>
+
+    <!-- ===== SCREEN: REUNIONS ===== -->
+    <section id="screen-reunions" class="screen hidden">
+      <div class="reunions-header">
+        <div class="reunions-icon">💜</div>
+        <h1 class="reunions-title">Famílias Reunidas</h1>
+        <p class="reunions-subtitle">Cada reencontro é uma vitória. Estas famílias encontraram-se graças à comunidade.
+        </p>
+      </div>
+      <div id="reunions-list">
+        <!-- Rendered by JS -->
+      </div>
+      <div style="height: 100px;"></div>
+    </section>
+
+    <!-- ===== FAB (Floating Action Button) ===== -->
+    <div class="fab-backdrop" id="fab-backdrop"></div>
+    <div class="fab-container" id="fab-container">
+      <div class="fab-options" id="fab-options">
+        <button class="fab-option fab-option--missing" id="fab-opt-missing">
+          <span class="fab-option-icon">👤</span>
+          Registar Desaparecido
+        </button>
+        <button class="fab-option fab-option--found" id="fab-opt-found">
+          <span class="fab-option-icon">✅</span>
+          Reportar Encontrado
+        </button>
+        <button class="fab-option fab-option--sos" id="fab-opt-sos">
+          <span class="fab-option-icon">🆘</span>
+          Pedido SOS
+        </button>
+      </div>
+      <button class="fab-main" id="fab-main" aria-label="Adicionar registo">
+        ＋
+      </button>
+    </div>
+
+    <!-- ===== BOTTOM NAVIGATION ===== -->
+    <nav class="nav-bottom" id="nav-bottom">
+      <div class="nav-items">
+        <button class="nav-item active" data-screen="feed" id="nav-feed">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Início</span>
+          <span class="nav-badge hidden" id="nav-badge-sos">0</span>
+        </button>
+        <button class="nav-item" data-screen="reunions" id="nav-reunions">
+          <span class="nav-icon">💜</span>
+          <span class="nav-label">Reuniões</span>
+        </button>
+      </div>
+    </nav>
+
+  </div><!-- /app-container -->
+
+  <script src="app.js"></script>
+</body>
+
+</html>
